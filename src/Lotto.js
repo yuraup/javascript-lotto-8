@@ -1,18 +1,41 @@
+import { errorMessages } from './constants/errors.js';
+import { LOTTO_SIZE, MAX_NUMBER, MIN_NUMBER } from './constants/numbers.js';
+
 class Lotto {
   #numbers;
 
   constructor(numbers) {
     this.#validate(numbers);
-    this.#numbers = numbers;
+    this.#numbers = [...numbers].sort((a, b) => a - b);
   }
 
   #validate(numbers) {
-    if (numbers.length !== 6) {
-      throw new Error("[ERROR] 로또 번호는 6개여야 합니다.");
+    if (numbers.length !== LOTTO_SIZE) {
+      throw new Error(errorMessages.LOTTO_SIZE);
+    }
+
+    if (!this.#isInRange(numbers)) {
+      throw new Error(errorMessages.LOTTO_RANGE);
+    }
+
+    if (this.#isDuplicated(numbers)) {
+      throw new Error(errorMessages.LOTTO_OVERLAP);
     }
   }
 
-  // TODO: 추가 기능 구현
+  #isInRange(numbers) {
+    return numbers.every(
+      (number) => number >= MIN_NUMBER && number <= MAX_NUMBER,
+    );
+  }
+
+  #isDuplicated(numbers) {
+    return new Set(numbers).size !== numbers.length;
+  }
+
+  getNumbers() {
+    return [...this.#numbers];
+  }
 }
 
 export default Lotto;
