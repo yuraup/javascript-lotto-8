@@ -14,7 +14,7 @@ export class Printer {
   }
 
   printLottoSize(lottoSize) {
-    Console.print(`\n ${lottoSize}개를 구매했습니다. \n`);
+    Console.print(`\n${lottoSize}개를 구매했습니다.`);
   }
 
   printLottoList(tickets) {
