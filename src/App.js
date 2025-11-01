@@ -29,6 +29,8 @@ class App {
         this.printer.printLottoSize(tickets.length);
         this.printer.printLottoList(tickets);
 
+        const collectWinning = await this.reader.askWinning();
+
         return;
       } catch (error) {
         this.printer.printError(error.message);
