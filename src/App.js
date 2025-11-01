@@ -22,7 +22,13 @@ class App {
         const inputMoney = await this.reader.askMoney();
         const money = validateMoney(inputMoney);
         this.user.setMoney(money);
+
         this.lottoMachine.issue(money);
+        const tickets = this.lottoMachine.getNumbers();
+
+        this.printer.printLottoSize(tickets.length);
+        this.printer.printLottoList(tickets);
+
         return;
       } catch (error) {
         this.printer.printError(error.message);
