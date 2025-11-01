@@ -8,4 +8,8 @@ export class User {
   setMoney(money) {
     this.money = money;
   }
+
+  setWinning(winningNumbers) {
+    this.winningNumbers = winningNumbers;
+  }
 }

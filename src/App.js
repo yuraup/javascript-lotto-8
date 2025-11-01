@@ -3,6 +3,8 @@ import { Printer } from './io/Printer.js';
 import { User } from './User.js';
 import LottoMachine from './LottoMachine.js';
 import { validateMoney } from './utils/Validators.js';
+import Lotto from './Lotto.js';
+import { parseWinning } from './utils/Parser.js';
 
 class App {
   constructor() {
@@ -29,7 +31,8 @@ class App {
   }
 
   async #collectWinning() {
-    const winning = await this.#winningRetry();
+    const winningNumbers = await this.#winningRetry();
+    this.user.setWinning(winningNumbers);
   }
 
   async #retry(step) {
@@ -45,6 +48,7 @@ class App {
   async #purchaseRetry() {
     return this.#retry(async () => {
       const inputMoney = await this.reader.askMoney();
+
       return validateMoney(inputMoney);
     });
   }
@@ -52,6 +56,12 @@ class App {
   async #winningRetry() {
     return this.#retry(async () => {
       const inputWinning = await this.reader.askWinning();
+
+      const parsed = parseWinning(inputWinning);
+
+      const lotto = new Lotto(parsed);
+
+      return lotto.getNumbers();
     });
   }
 }
