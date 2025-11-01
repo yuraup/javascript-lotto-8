@@ -2,9 +2,9 @@ import { Reader } from './io/Reader.js';
 import { Printer } from './io/Printer.js';
 import { User } from './User.js';
 import LottoMachine from './LottoMachine.js';
-import { validateMoney } from './utils/Validators.js';
+import { validateMoney, validateBonus } from './utils/Validators.js';
 import Lotto from './Lotto.js';
-import { parseWinning } from './utils/Parser.js';
+import { parseWinning, parseBonus } from './utils/Parser.js';
 
 class App {
   constructor() {
@@ -38,6 +38,7 @@ class App {
 
   async #collectBonus() {
     const bonusNumber = await this.#bonusRetry();
+    this.user.setBonus(bonusNumber);
   }
 
   async #retry(step) {
@@ -73,7 +74,9 @@ class App {
   async #bonusRetry() {
     return this.#retry(async () => {
       const inputBonus = await this.reader.askBonus();
-      return inputBonus;
+
+      const parsed = parseBonus(inputBonus);
+      return validateBonus(parsed, this.user.winningNumbers);
     });
   }
 }

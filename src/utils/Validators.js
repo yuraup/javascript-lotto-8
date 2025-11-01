@@ -1,4 +1,5 @@
 import { errorMessages } from '../constants/errors.js';
+import { MIN_NUMBER, MAX_NUMBER } from '../constants/numbers.js';
 
 export function validateMoney(input) {
   const trimmed = input.trim();
@@ -10,4 +11,14 @@ export function validateMoney(input) {
   if (amount % 1000 !== 0) throw new Error(errorMessages.MONEY_UNIT);
 
   return amount;
+}
+
+export function validateBonus(bonuseNumber, winningNumbers) {
+  if (bonuseNumber < MIN_NUMBER || bonuseNumber > MAX_NUMBER)
+    throw new Error(errorMessages.LOTTO_RANGE);
+
+  if (winningNumbers.includes(bonuseNumber))
+    throw new Error(errorMessages.BONUS_OVERLAP);
+
+  return bonuseNumber;
 }

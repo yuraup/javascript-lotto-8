@@ -12,4 +12,8 @@ export class User {
   setWinning(winningNumbers) {
     this.winningNumbers = winningNumbers;
   }
+
+  setBonus(bonusNumber) {
+    this.bonusNumber = bonusNumber;
+  }
 }
