@@ -17,6 +17,7 @@ class App {
   async run() {
     await this.#purchase();
     await this.#collectWinning();
+    await this.#collectBonus();
   }
 
   async #purchase() {
@@ -33,6 +34,10 @@ class App {
   async #collectWinning() {
     const winningNumbers = await this.#winningRetry();
     this.user.setWinning(winningNumbers);
+  }
+
+  async #collectBonus() {
+    const bonusNumber = await this.#bonusRetry();
   }
 
   async #retry(step) {
@@ -62,6 +67,13 @@ class App {
       const lotto = new Lotto(parsed);
 
       return lotto.getNumbers();
+    });
+  }
+
+  async #bonusRetry() {
+    return this.#retry(async () => {
+      const inputBonus = await this.reader.askBonus();
+      return inputBonus;
     });
   }
 }

@@ -9,4 +9,8 @@ export class Reader {
   async askWinning() {
     return Console.readLineAsync(InputMessages.WINNING);
   }
+
+  async askBonus() {
+    return Console.readLineAsync(InputMessages.BONUS);
+  }
 }
