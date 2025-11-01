@@ -13,29 +13,46 @@ class App {
   }
 
   async run() {
-    await this.collectInputs();
+    await this.#purchase();
+    await this.#collectWinning();
   }
 
-  async collectInputs() {
+  async #purchase() {
+    const money = await this.#purchaseRetry();
+    this.user.setMoney(money);
+
+    this.lottoMachine.issue(money);
+    const tickets = this.lottoMachine.getNumbers();
+
+    this.printer.printLottoSize(tickets.length);
+    this.printer.printLottoList(tickets);
+  }
+
+  async #collectWinning() {
+    const winning = await this.#winningRetry();
+  }
+
+  async #retry(step) {
     while (true) {
       try {
-        const inputMoney = await this.reader.askMoney();
-        const money = validateMoney(inputMoney);
-        this.user.setMoney(money);
-
-        this.lottoMachine.issue(money);
-        const tickets = this.lottoMachine.getNumbers();
-
-        this.printer.printLottoSize(tickets.length);
-        this.printer.printLottoList(tickets);
-
-        const collectWinning = await this.reader.askWinning();
-
-        return;
+        return await step();
       } catch (error) {
         this.printer.printError(error.message);
       }
     }
+  }
+
+  async #purchaseRetry() {
+    return this.#retry(async () => {
+      const inputMoney = await this.reader.askMoney();
+      return validateMoney(inputMoney);
+    });
+  }
+
+  async #winningRetry() {
+    return this.#retry(async () => {
+      const inputWinning = await this.reader.askWinning();
+    });
   }
 }
 
