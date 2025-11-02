@@ -13,12 +13,12 @@ export function validateMoney(input) {
   return amount;
 }
 
-export function validateBonus(bonuseNumber, winningNumbers) {
-  if (bonuseNumber < MIN_NUMBER || bonuseNumber > MAX_NUMBER)
+export function validateBonus(bonusNumber, winningNumbers) {
+  if (bonusNumber < MIN_NUMBER || bonusNumber > MAX_NUMBER)
     throw new Error(errorMessages.LOTTO_RANGE);
 
-  if (winningNumbers.includes(bonuseNumber))
+  if (winningNumbers.includes(bonusNumber))
     throw new Error(errorMessages.BONUS_OVERLAP);
 
-  return bonuseNumber;
+  return bonusNumber;
 }
