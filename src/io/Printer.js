@@ -18,7 +18,9 @@ export class Printer {
   }
 
   printLottoList(tickets) {
-    tickets.forEach((ticket) => Console.print(ticket));
+    tickets.forEach((ticket) => {
+      Console.print(`[${ticket.join(', ')}]`);
+    });
   }
 
   printResultTitle() {
